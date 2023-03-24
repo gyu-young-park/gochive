@@ -13,6 +13,10 @@ func NewBasicHandler() *basicHandler {
 	return &basicHandler{}
 }
 
+func (b *basicHandler) greeting(c *gin.Context) {
+	c.String(http.StatusOK, "Hello! World")
+}
+
 func (b *basicHandler) healthcheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",

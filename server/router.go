@@ -17,5 +17,6 @@ func NewbasicRouter() *basicRouter {
 }
 
 func (b *basicRouter) SetupRoutes(core *gin.Engine) {
+	core.GET("", b.basicHandler.greeting)
 	core.GET("healthcheck", b.basicHandler.healthcheck)
 }
