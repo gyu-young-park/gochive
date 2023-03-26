@@ -31,6 +31,6 @@ func (s *Service) register(work iWork) {
 
 func (s *Service) Execute() {
 	for _, work := range s.works {
-		work.do(s.store)
+		go work.do(s.store)
 	}
 }

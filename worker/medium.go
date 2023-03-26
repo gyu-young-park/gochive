@@ -3,7 +3,6 @@ package worker
 import (
 	"fmt"
 	"github/gyu-young-park/go-archive/repository"
-	"time"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -48,7 +47,6 @@ func (m *mediumWork) do(store *repository.Storer) {
 			continue
 		}
 		fmt.Println("Create Post: ", id)
-		time.Sleep(time.Second)
 	}
 }
 
