@@ -1,6 +1,7 @@
 package worker
 
 const (
+	MEDIUM              = "medium"
 	MEDIUM_ROOT_ADDRESS = "https://medium.com"
 )
 

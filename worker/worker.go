@@ -1,15 +1,22 @@
 package worker
 
+import (
+	"github/gyu-young-park/go-archive/repository"
+)
+
 type iWork interface {
-	do()
+	do(store *repository.Storer)
 }
 
 type Service struct {
+	store *repository.Storer
 	works []iWork
 }
 
-func NewWorker() *Service {
-	s := &Service{}
+func NewWorker(store *repository.Storer) *Service {
+	s := &Service{
+		store: store,
+	}
 	s.ready()
 	return s
 }
@@ -24,6 +31,6 @@ func (s *Service) register(work iWork) {
 
 func (s *Service) Execute() {
 	for _, work := range s.works {
-		go work.do()
+		work.do(s.store)
 	}
 }

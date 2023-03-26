@@ -3,6 +3,7 @@ package worker
 import (
 	"fmt"
 	"github/gyu-young-park/go-archive/repository"
+	"time"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -21,15 +22,36 @@ func newMediumWork() *mediumWork {
 }
 
 func (m *mediumWork) ready() {
-	fmt.Println("hello workder")
 	m.crawler.OnHTML("article", func(e *colly.HTMLElement) {
 		post := repository.Post{}
-		post.Link = e.ChildAttrs("a", "href")[2]
+		//postingTime := e.ChildTexts("p")[1]
+		post.Author = e.ChildTexts("p")[0]
+		post.Link = makeMediumLink(e.ChildAttrs("a", "href")[2])
 		post.Title = e.ChildText("h2")
 		m.postList = append(m.postList, post)
 	})
 }
 
-func (m *mediumWork) do() {
+func (m *mediumWork) do(store *repository.Storer) {
 	m.crawler.Visit("https://medium.com/tag/go/latest")
+	for _, post := range m.postList {
+		id, err := store.CreatePostInDB(
+			post.Author,
+			MEDIUM,
+			post.Title,
+			post.Content,
+			post.Link,
+			post.PublishedAt,
+		)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		fmt.Println("Create Post: ", id)
+		time.Sleep(time.Second)
+	}
+}
+
+func makeMediumLink(link string) string {
+	return fmt.Sprintf("%s%s", MEDIUM_ROOT_ADDRESS, link)
 }
