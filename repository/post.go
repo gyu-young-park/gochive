@@ -16,7 +16,7 @@ type Post struct {
 	CreatedAt   time.Time
 }
 
-func (s *Storer) RetrivePostInDB(author, origin, title, content, link, publishedAt string) (*Post, error) {
+func (s *Storer) duplicateCheckInDB(author, origin, title, content, link, publishedAt string) (*Post, error) {
 	stmt := `SELECT id, author, origin, title, content, link, published_at, created_at
 			 FROM post
 			 WHERE origin=? AND title=? AND content=? AND link=? AND published_at=?;`
@@ -32,13 +32,30 @@ func (s *Storer) RetrivePostInDB(author, origin, title, content, link, published
 	return p, err
 }
 
-func (s *Storer) RetrivePostsInDB(origin string, limit int) ([]*Post, error) {
+func (s *Storer) RetriveLatestPostInDB(origin string) (*Post, error) {
 	stmt := `SELECT id, author, origin, title, content, link, published_at, created_at
 			 FROM post
 			 WHERE origin=?
+			 ORDER BY id DESC LIMIT 1;`
+
+	row := s.db.QueryRow(stmt, origin)
+
+	p := &Post{}
+	err := row.Scan(&p.Id, &p.Author, &p.Origin, &p.Title, &p.Content, &p.Link, &p.PublishedAt, &p.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, err
+}
+
+func (s *Storer) RetriveLatestPostsInDB(origin string, id, limit int) ([]*Post, error) {
+	stmt := `SELECT id, author, origin, title, content, link, published_at, created_at
+			 FROM post
+			 WHERE origin=? AND id < ?
 			 ORDER BY id DESC LIMIT ?;`
 
-	rows, err := s.db.Query(stmt, origin, limit)
+	rows, err := s.db.Query(stmt, origin, id, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +80,7 @@ func (s *Storer) RetrivePostsInDB(origin string, limit int) ([]*Post, error) {
 }
 
 func (s *Storer) CreatePostInDB(author, origin, title, content, link, publishedAt string) (int, error) {
-	post, err := s.RetrivePostInDB(author, origin, title, content, link, publishedAt)
+	post, err := s.duplicateCheckInDB(author, origin, title, content, link, publishedAt)
 	if post != nil {
 		fmt.Println("Duplicated data[Title:", post.Title, "]")
 		return int(post.Id), nil
