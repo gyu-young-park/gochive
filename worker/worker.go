@@ -23,6 +23,7 @@ func NewWorker(store *repository.Storer) *Service {
 
 func (s *Service) ready() {
 	s.register(newMediumWork())
+	s.register(NewredditWork())
 }
 
 func (s *Service) register(work iWork) {

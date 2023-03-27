@@ -88,7 +88,7 @@ func (s *Storer) CreatePostInDB(author, origin, title, content, link, publishedA
 	stmt := `INSERT INTO post (author, origin, title, content, link, published_at, created_at)
 			VALUES(?, ?, ?, ?, ?, ?, UTC_TIMESTAMP())`
 
-	result, err := s.db.Exec(stmt, author, origin, title, content, link, publishedAt, link)
+	result, err := s.db.Exec(stmt, author, origin, title, content, link, publishedAt)
 	if err != nil {
 		return -1, err
 	}
