@@ -36,28 +36,26 @@ type RedditTopPostListModel struct {
 				SubredditType              string        `json:"subreddit_type"`
 				Ups                        int           `json:"ups"`
 				TotalAwardsReceived        int           `json:"total_awards_received"`
-				MediaEmbed                 struct {
-				} `json:"media_embed"`
-				ThumbnailWidth        interface{}   `json:"thumbnail_width"`
-				AuthorFlairTemplateID interface{}   `json:"author_flair_template_id"`
-				IsOriginalContent     bool          `json:"is_original_content"`
-				UserReports           []interface{} `json:"user_reports"`
-				SecureMedia           interface{}   `json:"secure_media"`
-				IsRedditMediaDomain   bool          `json:"is_reddit_media_domain"`
-				IsMeta                bool          `json:"is_meta"`
-				Category              interface{}   `json:"category"`
-				SecureMediaEmbed      struct {
-				} `json:"secure_media_embed"`
-				LinkFlairText       interface{}   `json:"link_flair_text"`
-				CanModPost          bool          `json:"can_mod_post"`
-				Score               int           `json:"score"`
-				ApprovedBy          interface{}   `json:"approved_by"`
-				IsCreatedFromAdsUI  bool          `json:"is_created_from_ads_ui"`
-				AuthorPremium       bool          `json:"author_premium"`
-				Thumbnail           string        `json:"thumbnail"`
-				AuthorFlairCSSClass interface{}   `json:"author_flair_css_class"`
-				AuthorFlairRichtext []interface{} `json:"author_flair_richtext"`
-				Gildings            struct {
+				MediaEmbed                 struct{}      `json:"media_embed"`
+				ThumbnailWidth             interface{}   `json:"thumbnail_width"`
+				AuthorFlairTemplateID      interface{}   `json:"author_flair_template_id"`
+				IsOriginalContent          bool          `json:"is_original_content"`
+				UserReports                []interface{} `json:"user_reports"`
+				SecureMedia                interface{}   `json:"secure_media"`
+				IsRedditMediaDomain        bool          `json:"is_reddit_media_domain"`
+				IsMeta                     bool          `json:"is_meta"`
+				Category                   interface{}   `json:"category"`
+				SecureMediaEmbed           struct{}      `json:"secure_media_embed"`
+				LinkFlairText              interface{}   `json:"link_flair_text"`
+				CanModPost                 bool          `json:"can_mod_post"`
+				Score                      int           `json:"score"`
+				ApprovedBy                 interface{}   `json:"approved_by"`
+				IsCreatedFromAdsUI         bool          `json:"is_created_from_ads_ui"`
+				AuthorPremium              bool          `json:"author_premium"`
+				Thumbnail                  string        `json:"thumbnail"`
+				AuthorFlairCSSClass        interface{}   `json:"author_flair_css_class"`
+				AuthorFlairRichtext        []interface{} `json:"author_flair_richtext"`
+				Gildings                   struct {
 				} `json:"gildings"`
 				ContentCategories        interface{}   `json:"content_categories"`
 				IsSelf                   bool          `json:"is_self"`

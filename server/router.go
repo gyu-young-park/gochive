@@ -1,6 +1,10 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github/gyu-young-park/go-archive/repository"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Router interface {
 	SetupRoutes(*gin.Engine)
@@ -10,9 +14,9 @@ type basicRouter struct {
 	basicHandler *basicHandler
 }
 
-func NewbasicRouter() *basicRouter {
+func NewbasicRouter(storer *repository.Storer) *basicRouter {
 	r := &basicRouter{}
-	r.basicHandler = &basicHandler{}
+	r.basicHandler = newBasicHandler(storer)
 	return r
 }
 

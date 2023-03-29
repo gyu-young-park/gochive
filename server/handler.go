@@ -1,16 +1,18 @@
 package server
 
 import (
+	"github/gyu-young-park/go-archive/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type basicHandler struct {
+	store *repository.Storer
 }
 
-func NewBasicHandler() *basicHandler {
-	return &basicHandler{}
+func newBasicHandler(storer *repository.Storer) *basicHandler {
+	return &basicHandler{store: storer}
 }
 
 func (b *basicHandler) greeting(c *gin.Context) {

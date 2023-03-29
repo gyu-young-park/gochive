@@ -11,7 +11,6 @@ import (
 )
 
 type redditWork struct {
-	client *http.Client
 }
 
 func NewredditWork() *redditWork {
@@ -21,20 +20,24 @@ func NewredditWork() *redditWork {
 }
 
 func (r *redditWork) ready() {
-	r.client = &http.Client{
-		Timeout: 10 * time.Second,
-	}
 }
 
 func (r *redditWork) do(store *repository.Storer) {
 	url := makeTopNURL(GOLANG, 1, REDDIT_DAY)
 	fmt.Println(url)
-	resp, err := r.client.Get(url)
+
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
+	req.Header.Set("User-Agent", "GOCHIVE_BOT")
+	client := makeClientWithTimeout(5)
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
@@ -83,4 +86,10 @@ func makeContentShort(content string) string {
 		return content[:190] + "..."
 	}
 	return content
+}
+
+func makeClientWithTimeout(waitTime int) *http.Client {
+	return &http.Client{
+		Timeout: time.Duration(waitTime) * time.Second,
+	}
 }

@@ -1,6 +1,7 @@
 package app
 
 import (
+	api "github/gyu-young-park/go-archive/api/post"
 	"github/gyu-young-park/go-archive/repository"
 	"github/gyu-young-park/go-archive/server"
 	"github/gyu-young-park/go-archive/worker"
@@ -33,7 +34,8 @@ func NewApp() *app {
 
 func (a *app) Ready() {
 	a.worker.Execute()
-	a.httpServer.Register(server.NewbasicRouter())
+	a.httpServer.Register(server.NewbasicRouter(a.Store))
+	a.httpServer.Register(api.NewPostRouter(a.Store))
 }
 
 func (a *app) Start() {
